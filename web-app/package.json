@@ -1,0 +1,28 @@
+{
+  "name": "DSPC-server",
+  "version": "1.0.0",
+  "description": "Pagina web para controlar carro",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorenver/DRisk.git"
+  },
+  "keywords": [
+    "DSPC"
+  ],
+  "author": "Oswaldo Bayona",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "express-session": "^1.7.6",
+    "serve-favicon": "^2.3.0",
+    "swig": "^1.4.2",
+    "cookie-parser":"",
+    "serialport":""
+  }
+}

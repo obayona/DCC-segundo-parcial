@@ -1,0 +1,40 @@
+#panelExplorer div{
+	cursor:pointer;
+}
+
+#directoryList{
+	max-height:400px;
+  	height:auto !important;
+  	overflow-y: scroll;
+}
+
+.icon{
+	width: 25px;
+	height: 25px;
+	margin-right: 2%;
+}
+
+.pendientes{
+	background-color: #FF0000;
+}
+
+.completo{
+	background-color:#5cb85c;
+}
+
+
+.explorerBtn{
+	margin: 2%;
+}
+
+#directoryBar{
+	background: #D0F0C0
+}
+
+.Hidden{
+	visibility:hidden
+}
+
+.noHidden{
+	visibility:initial
+}
