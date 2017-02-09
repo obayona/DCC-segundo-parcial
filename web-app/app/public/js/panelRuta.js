@@ -17,11 +17,14 @@ var PanelRuta = function(){
       var y1 = points[i].y;
       var dx = (x1-x0)/stepWidth;
       var dy = (y0-y1)/stepHeight;
-      console.log(lastGyroAngle);
 
       var distance = Math.sqrt(dx*dx + dy*dy);
-      var angle = Math.atan(dy/dx);
-      angle = angle*180/Math.PI;
+      var angle = 0;
+      if(dx!=0){
+        angle = Math.atan(dy/dx);
+        angle = angle*180/Math.PI;  
+      }
+      
       var gyroAngle = remapAngle(angle, dx, dy);
       var correctedGyroAngle = correctGyroAngle(gyroAngle, lastGyroAngle)
       route.push({"d":distance, "a": correctedGyroAngle});
