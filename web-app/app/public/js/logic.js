@@ -11,8 +11,8 @@ var inicializar = function(){
   socket = io.connect();
   socket.on('currentPosition', function (data) {
     pos = data.split(";");
-    latitude = parseFloat(pos[0]);
-    longitude = parseFloat(pos[1]);
+    latitude = parseFloat(pos[1]);
+    longitude = parseFloat(pos[0]);
     console.log("recibo esto",latitude, longitude);
     addMarker(latitude, longitude);
     
@@ -90,10 +90,7 @@ function addMarker(latitude, longitude){
     "lat":latitude,
     "lng":longitude
   });
-  var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(latitude, longitude),
-      map:map
-  });
+
 
   if(waypoints.length<2){
     return;
