@@ -1,8 +1,8 @@
 var PanelRuta = function(){
 
   var points = [];
-  var LENGTH_WIDTH = 20;
-  var LENGTH_HEIGHT = 20;
+  var LENGTH_WIDTH = 5;
+  var LENGTH_HEIGHT = 5;
   var stepHeight;
   var stepWidth;
 

@@ -1,15 +1,24 @@
 var map;
-var markers = [];
 var waypoints=[];//puntos intermedios
 
+var socket = null;
 
 var panelRuta = new PanelRuta();
 
 var inicializar = function(){
 	panelRuta.init();
 
+  socket = io.connect();
+  socket.on('currentPosition', function (data) {
+    pos = data.split(";");
+    latitude = parseFloat(pos[0]);
+    longitude = parseFloat(pos[1]);
+    console.log("recibo esto",latitude, longitude);
+    addMarker(latitude, longitude);
+    
+  });
+
   btnNuevo.addEventListener('click', function(evt) {
-    console.log("***borrando")
     panelRuta.clean();
     initMap();
   });
@@ -21,6 +30,10 @@ var inicializar = function(){
 
     enviarRuta(route);
 	});
+
+  btnDetener.addEventListener('click', function(evt){
+    enviarMensaje("DETENER");
+  }); 
 
 
 }
@@ -34,7 +47,6 @@ function enviarMensaje(mensaje){
     if(event.target.status!=200){
       console.log("Error");
     }    
-    console.log("Enviado");
   },false);
   request.send(JSON.stringify({"mensaje":mensaje}));
 }
@@ -47,7 +59,6 @@ function enviarRuta(puntos){
     if(event.target.status!=200){
       console.log("Error");
     }    
-    console.log("Enviado");
   },false);
   request.send(JSON.stringify({"puntos":puntos}));
 
@@ -80,7 +91,7 @@ function addMarker(latitude, longitude){
     "lng":longitude
   });
   var marker = new google.maps.Marker({
-      position: event.latLng,
+      position: new google.maps.LatLng(latitude, longitude),
       map:map
   });
 
