@@ -2,36 +2,29 @@ var map;
 var markers = [];
 var waypoints=[];//puntos intermedios
 
-var estado = {
-  INICIAL:0,
-  EMPEZADO:1,
-  DETENIDO:2,
-  REGRESANDO:3
-};
 
-//#FE2E2E
+var panelRuta = new PanelRuta();
 
 var inicializar = function(){
-	btnNuevo.addEventListener('click', function(evt) {
+	panelRuta.init();
+
+  btnNuevo.addEventListener('click', function(evt) {
+    console.log("***borrando")
+    panelRuta.clean();
     initMap();
   });
 
   btnEmpezar.addEventListener('click', function(evt){
-    enviarRuta(waypoints);
-	});
-	btnDetener.addEventListener('click', function(evt){
-    enviarMensaje("DETENER");
-	});
-	btnReanudar.addEventListener('click', function(evt){
-    enviarMensaje("REANUDAR");
-	});
-	btnRegresar.addEventListener('click', function(evt){
-		enviarMensaje("REGRESAR");
-	});
+    
+    var route = panelRuta.calculateRoute();
+    console.log("ruta",route);
 
+    enviarRuta(route);
+	});
 
 
 }
+
 
 function enviarMensaje(mensaje){
   var request = new XMLHttpRequest();
@@ -80,11 +73,11 @@ function showErr(error){
 }
 
 
-function addMarker(event){
+function addMarker(latitude, longitude){
 
   waypoints.push({
-    "lat":event.latLng.lat(),
-    "lng":event.latLng.lng()
+    "lat":latitude,
+    "lng":longitude
   });
   var marker = new google.maps.Marker({
       position: event.latLng,
@@ -132,7 +125,6 @@ function initMap() {
       }
     };
   
-    map.addListener('click', addMarker);
     waypoints = [];
 	
    }, showErr);

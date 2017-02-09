@@ -1,5 +1,3 @@
-var SerialPort = require('serialport');
-
 
 var express = require('express');
 var session = require('express-session');
@@ -12,42 +10,21 @@ var fs = require('fs');
 var app = express();
 var http=require('http').Server(app);
 
-SerialPort.list(function (err, ports) {
-  ports.forEach(function(port) {
-    console.log(port.comName);
-    console.log(port.pnpId);
-    console.log(port.manufacturer);
-  });
-});
 
-//redis
-//var redis = require('redis');
-//var client = redis.createClient();
-/*
-var redisStore=require('connect-redis')(session);
 
-var sessionMiddleware = session({
-	secret: 'bobneuman',
-	store: new redisStore({
-			host:'localhost',
-			port: 6379,
-			client:client,
-			disableTTL: true}),
-	saveUninitialized: false,
-	resave: false
-});
-
-app.use(sessionMiddleware);*/
 app.use(cookieParser());  
 app.use(session({ secret: 'ballnewman',
 	resave: false,
 	saveUninitialized: true  
 }));
 
+//puerto serial
+var port = require('./app/serial/serialModule.js');
+
 //router
-var router=require('./app/router.js');
-
-
+var routerModule = require('./app/router.js');
+routerModule.setPort(port);
+var router = routerModule.getRouter();
 //cargar parametros de configuracion
 var file = fs.readFileSync('configuration.json', 'utf8')
 var configuracion = JSON.parse(file);
@@ -71,3 +48,8 @@ app.use('/',router);
 http.listen(app.get('port'),function(){
     console.log("DRisk Aplication running in a port " + app.get('port'));
 });
+
+
+var io = require('socket.io')(http);
+var realTimeModule = require("./app/realTime.js")
+realTimeModule.serialRealTime(io, port);

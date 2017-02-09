@@ -1,36 +1,22 @@
-var SerialPort = require('serialport');
 var html_dir = './app/views/';
-fs = require('fs');
 
-var file = fs.readFileSync('configuration.json', 'utf8')
-var configuracion = JSON.parse(file);
-var puertoSerial = configuracion.serial;
-var port = new SerialPort(puertoSerial,{
-	parser: SerialPort.parsers.readline('\n')
-});
-port.on('open', function() {
-	console.log("Puerto abierto");
-});
+var port = null;
 
-port.on('data', function(buffer){
-	console.log("buffer");
-	console.log(buffer);
-})
-
-exports.getIndex = function(request, response){
-	response.render('index');
+//FUNCIONES PARA EL PUERTO SERIAL
+exports.setPort = function(p){
+	port = p;
 }
 
 var enviarRutaSerial = function(ruta){
-
+	console.log("puntos")
 	enviarMensajeSerial("RUTA\n");
 
 	for (var i = 0; i<ruta.length; i++){
 		var punto = ruta[i]
-		var string = "" + punto.lat + ";" + punto.lng + "\n";
+		var string = "" + punto.d + ";" + punto.a + "\n";
 		enviarMensajeSerial(string);
 	}
-
+	enviarMensajeSerial("FIN\n");
 
 }
 
@@ -41,6 +27,15 @@ var enviarMensajeSerial =function(mensaje){
 		    }
 		    console.log( mensaje +'mensaje enviado');
 	});
+}
+//FUNCIONES HTTP
+
+exports.getIndex = function(request, response){
+	response.render('index');
+}
+
+exports.getPrueba = function(request, response){
+	response.render('prueba');
 }
 
 exports.enviarMensaje = function(request, response){
@@ -53,16 +48,7 @@ exports.enviarRuta = function(request, response){
 	var puntos = request.body.puntos;
 	
 	response.send({"Status":"OK"});
-
-	console.log(puertoSerial, puntos);
 	enviarRutaSerial(puntos);
-  	/*port.write("abcdefghijklm567890\n", function(err) {
-		    if (err) {
-		      return console.log('Error on write: ', err.message);
-		    }
-		    console.log(' message written');
-	});*/
-
 	
 }
 

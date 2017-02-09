@@ -5,7 +5,14 @@ var router=express.Router();
 
 
 router.get('/', controller.getIndex);
+router.get('/p', controller.getPrueba);
 router.post('/enviarRuta', controller.enviarRuta);
 router.post('/enviarMensaje', controller.enviarMensaje);
 
-module.exports = router;
+exports.setPort = function(port){
+	controller.setPort(port);
+}
+
+exports.getRouter = function(){
+	return router;
+}

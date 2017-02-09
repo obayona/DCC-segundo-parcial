@@ -23,6 +23,7 @@
     "serve-favicon": "^2.3.0",
     "swig": "^1.4.2",
     "cookie-parser":"",
-    "serialport":""
+    "serialport":"",
+    "socket.io":""
   }
 }
